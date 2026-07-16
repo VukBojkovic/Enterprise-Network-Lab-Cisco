@@ -1,0 +1,972 @@
+SW1
+
+SW1#show running-config 
+Building configuration...
+
+Current configuration : 2958 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname SW1
+!
+enable secret 5 $1$mERr$RldxcCZEZsTFTETUyRaA50
+!
+!
+!
+no ip domain-lookup
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,20,30,40 priority 24576
+!
+interface Port-channel1
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+!
+interface FastEthernet0/1
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 000D.BDB8.B7A9
+!
+interface FastEthernet0/2
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 000C.8523.C7C7
+!
+interface FastEthernet0/3
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 00E0.A3CD.D722
+!
+interface FastEthernet0/4
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 0090.2BCE.3108
+!
+interface FastEthernet0/5
+ switchport access vlan 40
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 00D0.BC3B.8327
+ spanning-tree portfast
+!
+interface FastEthernet0/6
+ switchport access vlan 30
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 000A.410C.263C
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface FastEthernet0/24
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+!
+interface GigabitEthernet0/2
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+banner motd ^CUnauthorized access PROHIBITED^C
+!
+!
+!
+line con 0
+ password 7 080243401A16091243595F
+ login
+!
+line vty 0 4
+ password 7 08177877584B56
+ login
+line vty 5 15
+ password 7 08177877584B56
+ login
+!
+!
+!
+!
+end
+
+
+
+SW1#show vlan brief
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Gig0/2
+10   OFFICE                           active    Fa0/1, Fa0/2
+20   ADMIN                            active    Fa0/3, Fa0/4
+30   GUEST                            active    Fa0/6
+40   SERVER                           active    Fa0/5
+1002 fddi-default                     active
+1003 token-ring-default               active
+1004 fddinet-default                  active
+1005 trnet-default                    active
+
+
+
+SW1#show interfaces trunk
+Port        Mode         Encapsulation  Status        Native vlan
+Po1         on           802.1q         trunking      1
+Gig0/1      on           802.1q         trunking      1
+
+Port        Vlans allowed on trunk
+Po1         10,20,30,40
+Gig0/1      10,20,30,40
+
+Port        Vlans allowed and active in management domain
+Po1         10,20,30,40
+Gig0/1      10,20,30,40
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po1         10,20,30,40
+Gig0/1      10,20,30,40
+
+
+SW1#show etherchannel summary
+Flags:  D - down        P - in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+----------------------------------------------
+
+1      Po1(SU)           LACP   Fa0/23(P) Fa0/24(P)
+
+
+SW1#show etherchannel summary
+Flags:  D - down        P - in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+----------------------------------------------
+
+1      Po1(SU)           LACP   Fa0/23(P) Fa0/24(P)
+SW1#show spanning-tree vlan 10
+VLAN0010
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    24586
+             Address     0001.969B.657D
+             This bridge is the root
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    24586  (priority 24576 sys-id-ext 10)
+             Address     0001.969B.657D
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  20
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/2            Desg FWD 19        128.2    P2p
+Fa0/1            Desg FWD 19        128.1    P2p
+Po1              Desg FWD 12        128.27   P2p
+Gi0/1            Desg FWD 4         128.25   P2p
+
+
+SW1#show port-security
+Secure Port MaxSecureAddr CurrentAddr SecurityViolation Security Action
+               (Count)       (Count)        (Count)
+--------------------------------------------------------------------
+        Fa0/1        1          1                 0         Shutdown
+        Fa0/2        1          1                 0         Shutdown
+        Fa0/3        1          1                 0         Shutdown
+        Fa0/4        1          1                 0         Shutdown
+        Fa0/5        1          1                 0         Restrict
+        Fa0/6        1          1                 0         Restrict
+----------------------------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+SW2
+
+SW2#show running-config 
+Building configuration...
+
+Current configuration : 1699 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname SW2
+!
+enable secret 5 $1$mERr$RldxcCZEZsTFTETUyRaA50
+!
+!
+!
+no ip domain-lookup
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,20,30,40 priority 28672
+!
+interface Port-channel1
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface FastEthernet0/24
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+!
+interface GigabitEthernet0/2
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+!
+!
+!
+line con 0
+ password 7 080243401A16091243595F
+ login
+!
+line vty 0 4
+ password 7 08177877584B56
+ login
+line vty 5 15
+ password 7 08177877584B56
+ login
+!
+!
+!
+!
+end
+
+
+
+SW2#show vlan brief
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Gig0/2
+10   OFFICE                           active
+20   ADMIN                            active
+30   GUEST                            active
+40   SERVER                           active
+1002 fddi-default                     active
+1003 token-ring-default               active
+1004 fddinet-default                  active
+1005 trnet-default                    active
+
+
+SW2#show interfaces trunk
+Port        Mode         Encapsulation  Status        Native vlan
+Po1         on           802.1q         trunking      1
+Gig0/1      on           802.1q         trunking      1
+
+Port        Vlans allowed on trunk
+Po1         10,20,30,40
+Gig0/1      10,20,30,40
+
+Port        Vlans allowed and active in management domain
+Po1         10,20,30,40
+Gig0/1      10,20,30,40
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po1         10,20,30,40
+Gig0/1      10,20,30,40
+
+
+SW2#show etherchannel summary
+Flags:  D - down        P - in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+----------------------------------------------
+
+1      Po1(SU)           LACP   Fa0/23(P) Fa0/24(P)
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+R1
+
+R1#show running-config
+Building configuration...
+
+Current configuration : 2835 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname R1
+!
+!
+!
+enable secret 5 $1$mERr$RldxcCZEZsTFTETUyRaA50
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2911/K9 sn FTX1524TPB5-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.2 255.255.255.0
+ ip helper-address 192.168.40.10
+ ip nat inside
+ ip access-group OFFICE-FILTER in
+ standby 10 ip 192.168.10.1
+ standby 10 priority 110
+ standby 10 preempt
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.2 255.255.255.0
+ ip helper-address 192.168.40.10
+ ip nat inside
+ standby 20 ip 192.168.20.1
+ standby 20 priority 110
+ standby 20 preempt
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.2 255.255.255.0
+ ip helper-address 192.168.40.10
+ ip nat inside
+ ip access-group GUEST-FILTER in
+ standby 30 ip 192.168.30.1
+ standby 30 priority 110
+ standby 30 preempt
+!
+interface GigabitEthernet0/0.40
+ encapsulation dot1Q 40
+ ip address 192.168.40.2 255.255.255.0
+ ip nat inside
+ standby 40 ip 192.168.40.1
+ standby 40 priority 110
+ standby 40 preempt
+!
+interface GigabitEthernet0/1
+ ip address 209.165.200.226 255.255.255.252
+ ip nat outside
+ ip access-group WAN-FIREWALL in
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+ip classless
+ip route 0.0.0.0 0.0.0.0 209.165.200.225
+!
+ip flow-export version 9
+!
+!
+access-list 1 permit 192.168.10.0 0.0.0.255
+access-list 1 permit 192.168.20.0 0.0.0.255
+access-list 1 permit 192.168.30.0 0.0.0.255
+access-list 1 permit 192.168.40.0 0.0.0.255
+ip access-list extended GUEST-FILTER
+ deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
+ deny ip 192.168.30.0 0.0.0.255 192.168.20.0 0.0.0.255
+ deny ip 192.168.30.0 0.0.0.255 192.168.40.0 0.0.0.255
+ permit ip 192.168.30.0 0.0.0.255 any
+ip access-list extended OFFICE-FILTER
+ deny ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
+ deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+ permit ip 192.168.10.0 0.0.0.255 192.168.40.0 0.0.0.255
+ permit ip 192.168.10.0 0.0.0.255 any
+ip access-list extended WAN-FIREWALL
+ permit tcp any any established
+ deny ip any 192.168.10.0 0.0.0.255
+ deny ip any 192.168.20.0 0.0.0.255
+ deny ip any 192.168.30.0 0.0.0.255
+ deny ip any 192.168.40.0 0.0.0.255
+ permit ip any any
+!
+!
+!
+!
+!
+line con 0
+ password 7 080243401A16091243595F
+ login
+!
+line aux 0
+!
+line vty 0 4
+ password 7 08177877584B56
+ login
+line vty 5 15
+ password 7 08177877584B56
+ login
+!
+!
+!
+end
+
+
+
+R1#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up
+GigabitEthernet0/0.10  192.168.10.2    YES manual up                    up
+GigabitEthernet0/0.20  192.168.20.2    YES manual up                    up
+GigabitEthernet0/0.30  192.168.30.2    YES manual up                    up
+GigabitEthernet0/0.40  192.168.40.2    YES manual up                    up
+GigabitEthernet0/1     209.165.200.226 YES manual up                    up
+GigabitEthernet0/2     unassigned      YES unset  administratively down down
+Vlan1                  unassigned      YES unset  administratively down down
+
+
+R1#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is 209.165.200.225 to network 0.0.0.0
+
+     192.168.10.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.10.0/24 is directly connected, GigabitEthernet0/0.10
+L       192.168.10.2/32 is directly connected, GigabitEthernet0/0.10
+     192.168.20.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.20.0/24 is directly connected, GigabitEthernet0/0.20
+L       192.168.20.2/32 is directly connected, GigabitEthernet0/0.20
+     192.168.30.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.30.0/24 is directly connected, GigabitEthernet0/0.30
+L       192.168.30.2/32 is directly connected, GigabitEthernet0/0.30
+     192.168.40.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.40.0/24 is directly connected, GigabitEthernet0/0.40
+L       192.168.40.2/32 is directly connected, GigabitEthernet0/0.40
+     209.165.200.0/24 is variably subnetted, 2 subnets, 2 masks
+C       209.165.200.224/30 is directly connected, GigabitEthernet0/1
+L       209.165.200.226/32 is directly connected, GigabitEthernet0/1
+S*   0.0.0.0/0 [1/0] via 209.165.200.225
+
+
+R1#show standby
+GigabitEthernet0/0.10 - Group 10
+  State is Active
+    9 state changes, last state change 02:06:49
+  Virtual IP address is 192.168.10.1
+  Active virtual MAC address is 0000.0C07.AC0A
+    Local virtual MAC address is 0000.0C07.AC0A (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 2.504 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.10.3, priority 100 (expires in 7 sec)
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-10 (default)
+GigabitEthernet0/0.20 - Group 20
+  State is Active
+    6 state changes, last state change 01:57:26
+  Virtual IP address is 192.168.20.1
+  Active virtual MAC address is 0000.0C07.AC14
+    Local virtual MAC address is 0000.0C07.AC14 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.624 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.20.3
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-20 (default)
+GigabitEthernet0/0.30 - Group 30
+  State is Active
+    5 state changes, last state change 01:58:06
+  Virtual IP address is 192.168.30.1
+  Active virtual MAC address is 0000.0C07.AC1E
+    Local virtual MAC address is 0000.0C07.AC1E (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.109 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.30.3
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-30 (default)
+GigabitEthernet0/0.40 - Group 40
+  State is Active
+    5 state changes, last state change 01:58:50
+  Virtual IP address is 192.168.40.1
+  Active virtual MAC address is 0000.0C07.AC28
+    Local virtual MAC address is 0000.0C07.AC28 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.311 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.40.3
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-40 (default)
+
+
+R1#show standby
+GigabitEthernet0/0.10 - Group 10
+  State is Active
+    9 state changes, last state change 02:06:49
+  Virtual IP address is 192.168.10.1
+  Active virtual MAC address is 0000.0C07.AC0A
+    Local virtual MAC address is 0000.0C07.AC0A (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 2.504 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.10.3, priority 100 (expires in 7 sec)
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-10 (default)
+GigabitEthernet0/0.20 - Group 20
+  State is Active
+    6 state changes, last state change 01:57:26
+  Virtual IP address is 192.168.20.1
+  Active virtual MAC address is 0000.0C07.AC14
+    Local virtual MAC address is 0000.0C07.AC14 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.624 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.20.3
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-20 (default)
+GigabitEthernet0/0.30 - Group 30
+  State is Active
+    5 state changes, last state change 01:58:06
+  Virtual IP address is 192.168.30.1
+  Active virtual MAC address is 0000.0C07.AC1E
+    Local virtual MAC address is 0000.0C07.AC1E (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.109 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.30.3
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-30 (default)
+GigabitEthernet0/0.40 - Group 40
+  State is Active
+    5 state changes, last state change 01:58:50
+  Virtual IP address is 192.168.40.1
+  Active virtual MAC address is 0000.0C07.AC28
+    Local virtual MAC address is 0000.0C07.AC28 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.311 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.40.3
+  Priority 110 (configured 110)
+  Group name is hsrp-Gig-40 (default)
+R1#show ip nat translations
+R1#show ip nat statistics
+Total translations: 0 (0 static, 0 dynamic, 0 extended)
+Outside Interfaces: GigabitEthernet0/1
+Inside Interfaces: GigabitEthernet0/0.10 , GigabitEthernet0/0.20 , GigabitEthernet0/0.30 , GigabitEthernet0/0.40
+Hits: 12  Misses: 17
+Expired translations: 12
+Dynamic mappings:
+
+
+R1#show access-lists
+Standard IP access list 1
+    10 permit 192.168.10.0 0.0.0.255 (16 match(es))
+    20 permit 192.168.20.0 0.0.0.255
+    30 permit 192.168.30.0 0.0.0.255 (8 match(es))
+    40 permit 192.168.40.0 0.0.0.255
+Extended IP access list GUEST-FILTER
+    10 deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
+    20 deny ip 192.168.30.0 0.0.0.255 192.168.20.0 0.0.0.255
+    30 deny ip 192.168.30.0 0.0.0.255 192.168.40.0 0.0.0.255 (8 match(es))
+    40 permit ip 192.168.30.0 0.0.0.255 any (511 match(es))
+Extended IP access list OFFICE-FILTER
+    10 deny ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255 (4 match(es))
+    20 deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255 (4 match(es))
+    30 permit ip 192.168.10.0 0.0.0.255 192.168.40.0 0.0.0.255 (4 match(es))
+    40 permit ip 192.168.10.0 0.0.0.255 any (446 match(es))
+Extended IP access list WAN-FIREWALL
+    10 permit tcp any any established
+    20 deny ip any 192.168.10.0 0.0.0.255
+    30 deny ip any 192.168.20.0 0.0.0.255
+    40 deny ip any 192.168.30.0 0.0.0.255
+    50 deny ip any 192.168.40.0 0.0.0.255
+    60 permit ip any any
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+R2
+
+R2#show running-config 
+Building configuration...
+
+Current configuration : 1602 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname R2
+!
+!
+!
+enable secret 5 $1$mERr$RldxcCZEZsTFTETUyRaA50
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2911/K9 sn FTX15245OVG-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.3 255.255.255.0
+ ip helper-address 192.168.40.10
+ standby 10 ip 192.168.10.1
+ standby 10 preempt
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.3 255.255.255.0
+ ip helper-address 192.168.40.10
+ standby 20 ip 192.168.20.1
+ standby 20 preempt
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.3 255.255.255.0
+ ip helper-address 192.168.40.10
+ standby 30 ip 192.168.30.1
+ standby 30 preempt
+!
+interface GigabitEthernet0/0.40
+ encapsulation dot1Q 40
+ ip address 192.168.40.3 255.255.255.0
+ standby 40 ip 192.168.40.1
+ standby 40 preempt
+!
+interface GigabitEthernet0/1
+ ip address 209.165.200.230 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 209.165.200.229 
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ password 7 080243401A16091243595F
+ login
+!
+line aux 0
+!
+line vty 0 4
+ password 7 08177877584B56
+ login
+line vty 5 15
+ password 7 08177877584B56
+ login
+!
+!
+!
+end
+
+
+R2#show standby
+GigabitEthernet0/0.10 - Group 10
+  State is Standby
+    6 state changes, last state change 02:06:56
+  Virtual IP address is 192.168.10.1
+  Active virtual MAC address is 0000.0C07.AC0A
+    Local virtual MAC address is 0000.0C07.AC0A (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 2.63 secs
+  Preemption enabled
+  Active router is 192.168.10.2, priority 110 (expires in 9 sec)
+    MAC address is 0000.0C07.AC0A
+  Standby router is local
+  Priority 100 (default 100)
+  Group name is hsrp-Gig-10 (default)
+GigabitEthernet0/0.20 - Group 20
+  State is Standby
+    3 state changes, last state change 02:00:45
+  Virtual IP address is 192.168.20.1
+  Active virtual MAC address is 0000.0C07.AC14
+    Local virtual MAC address is 0000.0C07.AC14 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 1.026 secs
+  Preemption enabled
+  Active router is 192.168.20.2
+  Standby router is local
+  Priority 100 (default 100)
+  Group name is hsrp-Gig-20 (default)
+GigabitEthernet0/0.30 - Group 30
+  State is Standby
+    3 state changes, last state change 02:01:34
+  Virtual IP address is 192.168.30.1
+  Active virtual MAC address is 0000.0C07.AC1E
+    Local virtual MAC address is 0000.0C07.AC1E (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 1.631 secs
+  Preemption enabled
+  Active router is 192.168.30.2
+  Standby router is local
+  Priority 100 (default 100)
+  Group name is hsrp-Gig-30 (default)
+GigabitEthernet0/0.40 - Group 40
+  State is Standby
+    3 state changes, last state change 02:02:16
+  Virtual IP address is 192.168.40.1
+  Active virtual MAC address is 0000.0C07.AC28
+    Local virtual MAC address is 0000.0C07.AC28 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.148 secs
+  Preemption enabled
+  Active router is 192.168.40.2
+  Standby router is local
+  Priority 100 (default 100)
+  Group name is hsrp-Gig-40 (default)
